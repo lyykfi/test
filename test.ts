@@ -93,8 +93,6 @@ export const setDataFromItem = (
       return state;
     }
   
-    // TODO для формулировок добавить проверку из Нефинансовых условий
-    // TODO для поручений добавить проверку из Нефинансовых условий
     const assignments =
       item?.selections?.assignments?.map(
         assignment => assignment?.toString() ?? '0',
