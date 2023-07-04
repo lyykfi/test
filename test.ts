@@ -39,8 +39,6 @@ const setType = (calledFrom: ECalledFrom): string[] => {
 
 export const setDataFromItem = (
     item: SubscriptionDto | undefined,
-    calledFrom: ECalledFrom,
-    individualCondition?: SsksIndividualConditionCustom,
     chosenAssignment?: string | null,
     chosenWording?: string | null,
     currentStaff?: StaffDto,
@@ -48,50 +46,6 @@ export const setDataFromItem = (
     const getInitStaff = () =>
       currentStaff?.id ? [String(currentStaff.id)] : [];
   
-    if (individualCondition) {
-      const assignments =
-        individualCondition?.assignments?.map(
-          assignment => assignment.assignmentId?.toString() ?? '0',
-        ) ?? [];
-      const wordings =
-        individualCondition?.wordings?.map(wording => wording.id.toString()) ??
-        [];
-      const state: FormModel = {
-        ...INITIAL_STATE,
-        selections: {
-          ...INITIAL_STATE.selections,
-          companyGroups: getArrayIds(individualCondition.companyGroup?.id),
-          clients: getArrayIds(individualCondition.client?.id),
-          filials: getArrayIds(individualCondition.filial?.id),
-          products: getArrayIds(individualCondition.product?.id),
-          individualConditions: individualCondition
-            ? [individualCondition.id as number]
-            : [],
-          assignments: chosenAssignment ? [chosenAssignment] : assignments,
-          icWordings: chosenWording ? [chosenWording] : wordings,
-        },
-        types: setType(calledFrom),
-        periods: item ? PERIODS.map(({ value }) => value) : [],
-        startDate: null,
-        endDate: null,
-        subscriberGroups: [],
-        staffs: getInitStaff(),
-        emails: [],
-        initialObject: {
-          active: true,
-          selections: {
-            companyGroups: getInitialObjectArray(
-              individualCondition.companyGroup,
-            ),
-            clients: getInitialObjectArray(individualCondition.client),
-            filials: getInitialObjectArray(individualCondition.filial),
-            products: getInitialObjectArray(individualCondition.product),
-          },
-        } as any,
-      };
-  
-      return state;
-    }
   
     const assignments =
       item?.selections?.assignments?.map(
